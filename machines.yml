@@ -1,0 +1,14 @@
+- name: ipa
+  cpus: 1
+  memory: 4092
+  ip: 192.168.99.10
+  so: centos/7
+  provision: provision/ipa.yml
+
+- name: centos
+  cpus: 1
+  memory: 1024
+  ip: 192.168.99.20
+  so: centos/7
+  provision: provision/centos.yml
+
