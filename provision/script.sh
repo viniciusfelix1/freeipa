@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DOMAIN="4labs.example"
+IPA_IP="192.168.99.10"
 
 # Variaveis opcionais
 ## Se não definir as senhas, serão geradas senhas aleatórias.
@@ -11,7 +12,7 @@ DOMAIN="4labs.example"
 
 server(){
   sed -ri 's/127.0.1.1.*//g' /etc/hosts
-  echo -e "${IP}\t${HOSTNAME}.${DOMAIN}\t${HOSTNAME}" | sudo tee -a /etc/hosts
+  echo -e "${IPA_IP}\t${HOSTNAME}.${DOMAIN}\t${HOSTNAME}" | sudo tee -a /etc/hosts
   sudo hostnamectl set-hostname ${HOSTNAME}.${DOMAIN}
   yum install epel-release -y
   yum install ipa-server ipa-server-dns -y
@@ -20,7 +21,10 @@ server(){
 }
 
 client(){
- echo 'salve'
+  echo -e "${IPA_IP} ipa.${DOMAIN} ipa" | sudo tee -a /etc/hosts
+  echo -e "${IP}\t${HOSTNAME}.${DOMAIN}\t${HOSTNAME}" | sudo tee -a /etc/hosts
+  sudo hostnamectl set-hostname ${HOSTNAME}.${DOMAIN}
+  yum -y install freeipa-client
 }
 
 pw() {
@@ -43,7 +47,7 @@ pw() {
 
 IP=$(ip a | awk '/192/ {print $2}' | sed -r 's,/.{2},,')
 
-if [ $HOSTNAME == "ipa" ] || [ $HOSTNAME == "ipa.$DOMAIN" ] ; then
+if [ $HOSTNAME == "ipa" ]; then
   pw
   server
 else
