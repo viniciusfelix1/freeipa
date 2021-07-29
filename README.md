@@ -17,3 +17,4 @@ git clone https://github.com/viniciusfelix1/freeipa.git
 cd freeipa
 vagrant up
 ```
+E também é necessário mapear no `/etc/hosts` a seguinte entrada `192.168.99.10 ipa.4labs.example`.
